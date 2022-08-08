@@ -7,9 +7,13 @@ Features:-
 
 1. You can use different type of Program:-
     a. Searching
+    
     b. Sorting
+    
     c. Mathematical Terms
+    
     d. Pattern
+    
     e. Matrix
     
 2. Each program give you basic input and output as well as detailed process.
