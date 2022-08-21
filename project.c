@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <process.h>
@@ -43,6 +44,7 @@ void factorial();
 int fac(int n);
 void fibonacci();
 int fib(int n);
+void carmichael();
 
 void pattern();
 void star(int n);
@@ -236,11 +238,11 @@ void searching()
     scanf("%d", &n);
 
     int *a = malloc(sizeof(int) * n);
-    printf("^> Enter the element of the array: ");
+    printf("^> Enter the elements of the array: ");
     for (i = 0; i < n; i++)
         scanf("%d", (a + i));
 
-    printf("^> Enter the number you want to Search: ");
+    printf("^> Enter the number you want to search: ");
     scanf(" %d", &x);
 rev:;
     printf("\n");
@@ -249,7 +251,7 @@ rev:;
     printf("[3]: Binary Search\n");
     printf("[4]: Interpolation Search\n");
     printf("[5]: Exponential Search\n\n");
-    printf("^> Please choose one: ");
+    printf("^> Please choose one (To back, press \"b/B\" | To reset, press \"r/R\" | To quit, press \"q/Q\"): ");
     scanf(" %c", &choose);
     system("cls");
     switch (choose)
@@ -309,6 +311,19 @@ rev:;
         mergeSort(a, 0, n - 1);
         array(a, n - 1);
         i = exponentialSearch(a, 0, n - 1, x);
+        break;
+    case 'b':
+    case 'B':
+        list();
+    break;
+    case 'r':
+    case 'R':
+        searching();
+    break;
+    case 'q':
+    case 'Q':
+        finish();
+    break;
     default:
         printf("Error! Please choose it carefully.\n");
         goto rev;
@@ -324,7 +339,7 @@ int linearSearch(int *a, int beg, int end, int x)
 {
     for (int i = beg; i <= end; i++)
     {
-        printf("-> Element %d is comparing with the list number %d.\n", x, *(a + i));
+        printf("-> Element %d is comparing with the list element %d.\n", x, *(a + i));
         if (*(a + i) == x)
             return i;
     }
@@ -340,13 +355,13 @@ int jumpSearch(int *a, int beg, int end, int x)
 
     for (i = beg; i <= end; i += d)
     {
-        printf("-> Element %d is comparing with the number %d.\n", x, *(a + i));
+        printf("-> Element %d is comparing with the list element %d.\n", x, *(a + i));
         if (x == *(a + i))
             return i;
 
         if (x < *(a + i))
         {
-            printf("-> Element %d is smaller than the number %d.\n", x, *(a + i));
+            printf("-> Element %d is smaller than the list element %d.\n", x, *(a + i));
             printf("-> Performing linear search between position %d to %d.\n", (i - d), i);
             return linearSearch(a, i - d, i, x);
         }
@@ -411,18 +426,18 @@ int interpolationSearch(int *a, int beg, int end, int x)
 // Auxilary Space: O(1) to O(log(n)).
 int exponentialSearch(int *a, int beg, int end, int x)
 {
-    printf("-> Comparing first number %d of the list with given element %d.", *(a + beg), x);
+    printf("-> Element %d is comparing with the list element %d.\n", x, *(a + beg));
     if (*(a + beg++) == x)
         return -1;
 
     while (beg <= end && *(a + beg) <= x)
     {
         beg *= 2;
-        printf("-> Postion of the number in the list till list number is greater than given element: %d", beg);
+        printf("-> Postion of the list element till list element is greater than given element is %d.\n", beg);
     }
 
     int min = (beg > end) ? end : beg;
-    printf("-> Performing Binary Search between interval %d to %d.", beg / 2, min);
+    printf("-> Performing binary search between interval %d to %d.\n", beg / 2, min);
     return binarySearch(a, beg / 2, min, x);
 }
 
@@ -1398,6 +1413,8 @@ void multiplication()
             {
                 printf("-> Multiply %d of first list from %d of second list.\n", *(*(a + i) + k), *(*(b + k) + j));
                 *(*(mul + i) + j) += *(*(a + i) + k) * *(*(b + k) + j);
+                 printf("-> Value updated to %d at position (%d,%d).\n", *(*(mul + i) + j), i, j);
+
             }
         }
     }
