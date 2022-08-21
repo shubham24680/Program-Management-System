@@ -41,6 +41,8 @@ void array(int *a, int n);
 void maths();
 void factorial();
 int fac(int n);
+void fibonacci();
+int fib(int n);
 
 void pattern();
 void star(int n);
@@ -50,17 +52,14 @@ void butterfly(int n);
 void floyed();
 void pascal();
 void pattern1();
-void pattern2();
-void fibonacci();
-int fib(int n);
 
 void matrix();
-
 void sum();
 void difference();
 void multiplication();
 void input(int **num, int x, int y);
 void output(int **num, int x, int y);
+
 void login(FILE *fp);
 void details(FILE *fp);
 void finish();
@@ -928,7 +927,74 @@ void maths()
     printf("Mathematical Terms\n");
     printf("------------------\n");
     printf("defination.\n\n");
+
+rev:;
+    printf("\n");
+    printf("[1]: Fibonacci number\n");
+    printf("[2]: Factorial\n");
+    printf("[3]: Carmichael Number\n");
+    // printf("[4]: Butterfly Pattern\n\n");
+    // printf("[5]: Floyed Triangle\n");
+    // printf("[6]: Pascal Triangle\n");
+    // printf("[7]: Pattern 1\n\n");
+    printf("^> Please choose one: ");
+    scanf(" %c", &choose);
+    switch (choose)
+    {
+    case '1':
+        fibonacci();
+        break;
+    case '2':
+        factorial();
+        break;
+    case '3':
+        carmichael();
+        break;
+    // case '4':
+    //     butterfly(n);
+    //     break;
+    // case '5':
+    //     floyed(n);
+    //     break;
+    // case '6':
+    //     pascal(n);
+    //     break;
+    // case '7':
+    //     pattern1(n);
+    //     break;
+    default:
+        printf("Error! Please choose it carefully.\n");
+        goto rev;
+    }
     keys('3');
+}
+
+void fibonacci()
+{
+    system("cls");
+    printf("FIBONACCI NUMBER\n");
+    printf("-----------------\n");
+    printf("It is a series of numbers in which each number is the sum of the two preceding numbers.\n");
+    printf("Time Complexity: O(n)\n");
+    printf("Auxilary Space: O(n)\n\n");
+    int n, i;
+    printf("^> Enter the length: ");
+    scanf("%d", &n);
+
+    printf("# Fabonacci numbers:-  ");
+    for (i = 0; i < n; i++)
+        printf("%d ", fib(i));
+    keys('3');
+}
+
+int fib(int n)
+{
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+
+    return fib(n - 1) + fib(n - 2);
 }
 
 void factorial()
@@ -943,6 +1009,7 @@ void factorial()
     printf("^> Enter a  number: ");
     scanf("%d", &n);
     printf("\nFactorial of %d is %d ", n, fac(n));
+    keys('3');
 }
 
 int fac(int n)
@@ -956,6 +1023,11 @@ int fac(int n)
     n *= fac(n - 1);
     printf("%d ", n);
     return n;
+}
+
+void carmichael()
+{
+    
 }
 
 // ---------------------------------------------------------------------------- ( 4. Pattern ) --------------------------------------------------------------------------------
@@ -982,9 +1054,8 @@ rev:;
     printf("..............\n");
     printf("[5]: Floyed Triangle\n");
     printf("[6]: Pascal Triangle\n");
-    printf("[7]: Pattern 1\n");
-    printf("[8]: Pattern 2\n\n");
-    printf("^> Please choose one (To quit, press \"q/Q\"): ");
+    printf("[7]: Pattern 1\n\n");
+    printf("^> Please choose one:");
     scanf(" %c", &choose);
     switch (choose)
     {
@@ -1008,9 +1079,6 @@ rev:;
         break;
     case '7':
         pattern1();
-        break;
-    case '8':
-        pattern2();
         break;
     default:
         printf("Error! Please choose it carefully.\n");
@@ -1103,8 +1171,22 @@ void butterfly(int n)
     keys('4');
 }
 
-void floyed()
+void floyed(int n)
 {
+    system("cls");
+    printf("FLOYED TRIANGLE\n");
+    printf("---------------\n");
+    printf("Time Complexity: O(n*2)\n");
+    printf("Auxilary Space: O(1)\n\n");
+
+    int line = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= i; j++)
+            printf("%d ", line++);
+        printf("\n");
+    }
+    keys('4');
 }
 
 void pascal()
@@ -1114,10 +1196,6 @@ void pascal()
     printf("---------------\n");
     printf("Time Complexity: O(n*2)\n");
     printf("Auxilary Space: O(1)\n\n");
-    int n;
-    printf("Enter the number: ");
-    scanf("%d", &n);
-    printf("\n");
 
     for (int i = 1; i <= n; i++)
     {
@@ -1135,40 +1213,41 @@ void pascal()
     keys('4');
 }
 
-void pattern1()
-{
-}
-
-void pattern2()
-{
-}
-
-void fibonacci()
+void pattern1(int n)
 {
     system("cls");
-    printf("FIBONACCI NUMBER\n");
-    printf("-----------------\n");
-    printf("It is a series of numbers in which each number is the sum of the two preceding numbers.\n");
-    printf("Time Complexity: O(n)\n");
-    printf("Auxilary Space: O(n)\n\n");
-    int n, i;
-    printf("^> Enter the length: ");
-    scanf("%d", &n);
+    printf("PATTERN 1\n");
+    printf("---------\n");
+    printf("Time Complexity: O(n*2)\n");
+    printf("Auxilary Space: O(1)\n\n");
 
-    printf("# Fabonacci numbers:-  ");
-    for (i = 0; i < n; i++)
-        printf("%d ", fib(i));
+    int q, s, w;
+    q = 2 * n - 1;
+    s = n + 1;
+    for (int i = 1; i <= q; i++)
+    {
+        (i > n) ? s++ : s--;
+        w = n;
+        for (int j = 1; j <= q; j++)
+        {
+            if (i <= n)
+            {
+                if ((j <= (2 * n - i)) && (j > (i - 1)))
+                    printf("%d ", s);
+                else
+                    (j < n) ? printf("%d ", w--) : printf("%d ", ++w);
+            }
+            else
+            {
+                if ((j >= (2 * n - i)) && (j < (i + 1)))
+                    printf("%d ", s);
+                else
+                    (j < n) ? printf("%d ", w--) : printf("%d ", ++w);
+            }
+        }
+        printf("\n");
+    }
     keys('4');
-}
-
-int fib(int n)
-{
-    if (n == 0)
-        return 0;
-    if (n == 1)
-        return 1;
-
-    return fib(n - 1) + fib(n - 2);
 }
 
 // ---------------------------------------------------------------------------- ( 5. Matrix ) --------------------------------------------------------------------------------
