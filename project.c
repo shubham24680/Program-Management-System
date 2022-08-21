@@ -49,9 +49,9 @@ void star(int n);
 void hollowStar(int n);
 void hollowStarInRect(int n);
 void butterfly(int n);
-void floyed();
-void pascal();
-void pattern1();
+void floyed(int n);
+void pascal(int n);
+void pattern1(int n);
 
 void matrix();
 void sum();
@@ -1072,13 +1072,13 @@ rev:;
         butterfly(n);
         break;
     case '5':
-        floyed();
+        floyed(n);
         break;
     case '6':
-        pascal();
+        pascal(n);
         break;
     case '7':
-        pattern1();
+        pattern1(n);
         break;
     default:
         printf("Error! Please choose it carefully.\n");
@@ -1189,7 +1189,7 @@ void floyed(int n)
     keys('4');
 }
 
-void pascal()
+void pascal(int n)
 {
     system("cls");
     printf("PASCAL TRIANGLE\n");
@@ -1532,3 +1532,4 @@ void finish()
     getch();
     exit(1);
 }
+// End
