@@ -11,6 +11,11 @@
 void keys(char key);   // Back, Reset and Quit command handler.
 void signup(FILE *fp); // Signup yourself.
 void list();           // List of all Programs.
+void login(FILE *fp);
+void details(FILE *fp);
+void feedback();
+void help();
+void finish();
 
 void searching();
 int linearSearch(int *a, int beg, int end, int x);
@@ -23,11 +28,6 @@ void sorting();
 void selectionSort(int *a, int beg, int end);
 void bubbleSort(int *a, int beg, int end);
 void insertionSort(int *a, int beg, int end);
-void combSort(int *a, int beg, int end);
-void bitonicSort(int *a, int beg, int end, int x);
-void bitonicMerge(int *a, int beg, int end, int x);
-void bitonicSwap(int *a, int beg, int end, int x);
-void pegionholeSort(int *a, int beg, int end);
 void quickSort(int *a, int beg, int end);
 void normalQuickSort(int *a, int beg, int end, int code);
 void tailOptimizationQuickSort(int *a, int beg, int end, int code);
@@ -62,10 +62,6 @@ void multiplication();
 void input(int **num, int x, int y);
 void output(int **num, int x, int y);
 
-void login(FILE *fp);
-void details(FILE *fp);
-void finish();
-
 //  Variables.  ----------------------------------------------------------------------------------------------------------------------------------------------------
 char choose;
 struct Registor
@@ -85,7 +81,12 @@ rev:;
     printf("WELCOME\n");
     printf("-------\n");
     printf("[1]: Fill Details\n");
-    printf("[2]: View Details\n\n");
+    printf("[2]: View Details\n");
+    printf("[3]: Feedback\n");
+    printf("[4]: Help\n\n");
+    printf("Hint:-\n");
+    printf("FILL DETAILS:- To reach the program list after signup.\n");
+    printf("VIEW DETAILS:- To check number of users signed up.\n\n");
     printf("^> Please choose one (To quit, press \"q/Q\"): ");
     scanf(" %c", &choose);
     switch (choose)
@@ -95,6 +96,12 @@ rev:;
         break;
     case '2':
         login(fp);
+        break;
+    case '3':
+        feedback();
+        break;
+    case '4':
+        help();
         break;
     case 'q':
     case 'Q':
@@ -183,6 +190,147 @@ void signup(FILE *fp)
     list();
 }
 
+// ---------------------------------------------------------------------------- ( Login Page ) --------------------------------------------------------------------------------
+void login(FILE *fp)
+{
+    system("cls");
+    printf("LOGIN\n");
+    printf("-----\n");
+
+    char *username = malloc(sizeof(char) * M);
+    printf("Enter Username: ");
+    scanf("%s", username);
+
+    int i = 0;
+    char *password = malloc(sizeof(char) * M), blank = ' ';
+    printf("Enter Password: ");
+    while (i < M)
+    {
+        *(password + i) = getch();
+        blank = *(password + i);
+        if (blank == 13)
+            break;
+        else
+            printf("*");
+        i++;
+    }
+    *(password + i) = '\0';
+    i = 0;
+    printf("\n\n");
+    if (strcmp(username, "PMS") == 0 && strcmp(password, "nolimit") == 0)
+    {
+        printf("ACCESS GRANTED.\n");
+        printf("Press any key to continue...");
+        getch();
+        details(fp);
+    }
+    else
+    {
+        printf("ACCESS DENIED.\n");
+        printf("^>Please choose one (To back, press \"b/B\" | To quit, press \"q/Q\"): ");
+        scanf(" %c", &choose);
+        switch (choose)
+        {
+        case 'b':
+        case 'B':
+            main();
+            break;
+        case 'q':
+        case 'Q':
+            finish();
+            break;
+        default:
+            finish();
+            break;
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------- ( Detail Page ) --------------------------------------------------------------------------------
+void details(FILE *fp)
+{
+    system("cls");
+    printf("NAMES\n");
+    printf("-----\n");
+    while (fgets(registor.name, M - 1, fp) != 0)
+    {
+        printf("%s ", registor.name);
+        fflush(stdin);
+    }
+    fclose(fp);
+    keys('0');
+}
+
+// ---------------------------------------------------------------------------- ( Feedback Page ) --------------------------------------------------------------------------------
+void feedback()
+{
+    system("cls");
+    printf("FEEDBACK\n");
+    printf("--------\n");
+    FILE *thoughts = malloc(sizeof(char)*N);
+    thoughts = fopen("feedback.txt", "a+");
+    char name[M], views[N];
+    printf("Enter your name: ");
+    scanf(" %[^\n]", &name);
+    fflush(stdin);
+    fputs(name, thoughts);
+    fputs("\n", thoughts);
+    printf("Your thoughts and views are important for Us. Please write your opinion.\n\n");
+    scanf(" %[^\n]", &views);
+    fflush(stdin);
+    fputs(views, thoughts);
+    fputs("\n\n", thoughts);
+    fclose(thoughts);
+    keys('0');
+}
+
+// ---------------------------------------------------------------------------- ( Help Page ) --------------------------------------------------------------------------------
+void help()
+{
+    system("cls");
+    printf("Help\n");
+    printf("----\n");
+    FILE *help = malloc(sizeof(char)*N);
+    help = fopen("help.txt", "r");
+    char word[N];
+    while (fgets(word, N - 1, help) != 0)
+    {
+        printf("%s ", word);
+        fflush(stdin);
+    }
+    fclose(help);
+    keys('0');
+}
+
+// ---------------------------------------------------------------------------- ( Exit Page ) --------------------------------------------------------------------------------
+void finish()
+{
+    system("cls");
+    for (int i = 0; i < N; i++)
+        printf("-");
+    printf("\n");
+    for (int i = 0; i < N / 10; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            if (j == 0 || j == 1 || j == (N - 2) || j == (N - 1))
+                printf("|");
+            else if (i == 5 && j == 41)
+            {
+                printf("Thanks for Visiting.");
+                j += 19;
+            }
+            else
+                printf(" ");
+        }
+        printf("\n");
+    }
+    for (int i = 0; i < N; i++)
+        printf("-");
+    getch();
+    exit(1);
+}
+
 // ---------------------------------------------------------------------------- ( Program List Page ) --------------------------------------------------------------------------------
 void list()
 {
@@ -232,7 +380,7 @@ void searching()
     int n, x, i;
     printf("SEARCHING ALGORITHM\n");
     printf("-------------------\n");
-    printf("It is the process of finding element in the list.\n\n");
+    printf("It is the process of finding element in the array.\n\n");
 
     printf("^> Enter the length of the array: ");
     scanf("%d", &n);
@@ -315,15 +463,15 @@ rev:;
     case 'b':
     case 'B':
         list();
-    break;
+        break;
     case 'r':
     case 'R':
         searching();
-    break;
+        break;
     case 'q':
     case 'Q':
         finish();
-    break;
+        break;
     default:
         printf("Error! Please choose it carefully.\n");
         goto rev;
@@ -461,12 +609,9 @@ rev:;
     printf("[1]: Selection Sort\n");
     printf("[2]: Bubble Sort\n");
     printf("[3]: Insertion Sort\n");
-    printf("[4]: Comb Sort\n");
-    printf("[5]: Bitonic Sort\n");
-    printf("[6]: Pegionhole Sort\n");
-    printf("[7]: Quick Sort\n");
-    printf("[8]: Merge Sort\n");
-    printf("[9]:. Heap Sort\n\n");
+    printf("[4]: Quick Sort\n");
+    printf("[5]: Merge Sort\n");
+    printf("[6]: Heap Sort\n\n");
     printf("^> Please choose one: ");
     scanf(" %c", &choose);
     system("cls");
@@ -478,7 +623,7 @@ rev:;
         printf("It is an array by repeatedly finding the minimum element from unsorted part and putting it at the beginning.\n");
         printf("Time Complexity: O(n^2)\n");
         printf("Auxiliary Space: O(1)\n\n");
-        printf("Unsorted List\n");
+        printf("Unsorted Array\n");
         array(a, n - 1);
         selectionSort(a, 0, n - 1);
         break;
@@ -488,7 +633,7 @@ rev:;
         printf("It is an array that works by repeatedly swapping the adjacent elements if they are in the wrong order.\n");
         printf("Time Complexity: O(n^2) to O(n)\n");
         printf("Auxiliary Space: O(1)\n\n");
-        printf("Unsorted List\n");
+        printf("Unsorted Array\n");
         array(a, n - 1);
         bubbleSort(a, 0, n - 1);
         break;
@@ -498,55 +643,28 @@ rev:;
         printf("It is an array that works similar to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are picked and placed at the correct position in the sorted part.\n");
         printf("Time Complexity: O(n^2) to O(n)\n");
         printf("Auxiliary Space: O(1)\n\n");
-        printf("Unsorted List\n");
+        printf("Unsorted Array\n");
         array(a, n - 1);
         insertionSort(a, 0, n - 1);
         break;
     case '4':
-        printf("COMB SORT\n");
-        printf("---------\n");
-        printf("It is a simple comparison-based sorting algorithm. It is an improved form of bubble sort.\n");
-        printf("Time Complexity: O(n^2) to O(n)\n");
-        printf("Auxiliary Space: O(1)\n\n");
-        printf("Unsorted List\n");
-        array(a, n - 1);
-        combSort(a, 0, n - 1);
-        break;
-    case '5':
-        printf("BITONIC SORT\n");
-        printf("------------\n");
-        printf("It is a classic parallel algorithm for sorting.\n\n");
-        printf("Unsorted List\n");
-        array(a, n - 1);
-        printf("{1}: First element is greater than Second element         {2}. Second element is greater than first element.\n");
-        bitonicSort(a, 0, n, 1);
-        break;
-    case '6':
-        printf("PEGIONHOLE SORT\n");
-        printf("---------------\n");
-        printf("It is an array that is suitable for sorting lists of elements where the number of elements (n) and the length of the range of possible key values (N) are approximately the same.\n\n");
-        printf("Unsorted List\n");
-        array(a, n - 1);
-        pegionholeSort(a, 0, n - 1);
-        break;
-    case '7':
-        printf("Unsorted List\n");
+        printf("Unsorted Array\n");
         array(a, n - 1);
         quickSort(a, 0, n - 1);
         break;
-    case '8':
+    case '5':
         printf("MERGE SORT\n");
         printf("----------\n");
         printf("It is an array that is considered as an example of the divide and conquer strategy. So, in this algorithm, the array is initially divided into two equal halves and then they are combined in a sorted manner.\n\n");
-        printf("Unsorted List\n");
+        printf("Unsorted Array\n");
         array(a, n - 1);
         mergeSort(a, 0, n - 1);
         break;
-    case '9':
+    case '6':
         printf("HEAP SORT\n");
         printf("---------\n");
         printf("It is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the minimum element and place the minimum element at the beginning. We repeat the same process for the remaining elements.\n\n");
-        printf("Unsorted List\n");
+        printf("Unsorted Array\n");
         array(a, n - 1);
         heapSort(a, 0, n - 1);
         break;
@@ -554,7 +672,7 @@ rev:;
         printf("Error! Please choose it carefully.\n");
         goto rev;
     }
-    printf("Sorted List\n");
+    printf("Sorted Array\n");
     array(a, n - 1);
     keys('2');
 }
@@ -621,98 +739,6 @@ void insertionSort(int *a, int beg, int end)
         *(a + j + 1) = key;
         array(a, end);
     }
-}
-
-//  Time Complexity : O((n^2)/(2^p)) p = no. of increment.
-// Auxilary Space : O(1).
-// Improvement over Bubble Sort.
-void combSort(int *a, int beg, int end)
-{
-    int gap = end + 1;
-    int check = 1;
-    while (gap != 1 || check == 1)
-    {
-        gap = (gap < 1) ? 1 : gap / 1.3;
-        printf("-> The gap with a value %d.\n", gap);
-        check = 0;
-        for (int i = beg; i < (end + 1 - gap); i++)
-        {
-            printf("-> First element %d is comparing with element %d.\n", *(a + i), *(a + i + gap));
-            if (*(a + i) > *(a + i + gap))
-            {
-                printf("-> First element %d is greater than element %d. so, we swaped it.\n", *(a + i), *(a + i + gap));
-                int change = *(a + i);
-                *(a + i) = *(a + i + gap);
-                *(a + i + gap) = change;
-                check = 1;
-            }
-        }
-    }
-}
-
-void bitonicSort(int *a, int beg, int end, int x)
-{
-    if (end > 1)
-    {
-        printf("-> Entering array from %d to %d with value %d.\n", beg, end, x);
-        int k = end / 2;
-        printf("-> Dividing array into two parts %d to %d and %d to %d.\n", beg, k, k + 1, end);
-        bitonicSort(a, beg, k, 1);
-        bitonicSort(a, beg + k, k, 0);
-        bitonicMerge(a, beg, end, x);
-    }
-}
-
-void bitonicMerge(int *a, int beg, int end, int x)
-{
-    if (end > 1)
-    {
-        printf("-> Swaping array elements from %d to %d with value %d under required condition.\n", beg, end, x);
-        int k = end / 2;
-        for (int i = beg; i < (beg + k); i++)
-            bitonicSwap(a, i, i + k, x);
-        bitonicMerge(a, beg, k, x);
-        bitonicMerge(a, beg + k, k, x);
-    }
-}
-
-void bitonicSwap(int *a, int beg, int end, int x)
-{
-    if ((*(a + beg) > *(a + end) && x == 1) || (*(a + beg) < *(a + end) && x == 0))
-    {
-        printf("-> Swaping %d and %d.\n", *(a + beg), *(a + end));
-        int change = *(a + beg);
-        *(a + beg) = *(a + end);
-        *(a + end) = change;
-    }
-    else
-        printf("-> Swaping is not possible.\n");
-}
-
-void pegionholeSort(int *a, int beg, int end)
-{
-    int min = *a, max = *a;
-    for (int i = beg + 1; i <= end; i++)
-    {
-        if (*(a + i) > max)
-            max = *(a + i);
-
-        if (*(a + i) < min)
-            min = *(a + i);
-    }
-
-    int range = max - min + 1;
-    int *ph = malloc(sizeof(int) * range);
-    for (int i = beg; i < range; i++)
-        *(ph + i) = 0;
-
-    for (int i = beg; i <= end; i++)
-        (*(ph + *(a + i) - min))++;
-
-    int index = beg;
-    for (int i = beg; i < range; i++)
-        while ((*(ph + i))-- > 0)
-            *(a + index++) = (i + min);
 }
 
 void quickSort(int *a, int beg, int end)
@@ -929,7 +955,7 @@ void heapify(int *a, int end, int i)
 
 void array(int *a, int n)
 {
-    printf("# List:- ");
+    printf("# Array:- ");
     for (int i = 0; i <= n; i++)
         printf("%d ", *(a + i));
     printf("\n");
@@ -941,17 +967,11 @@ void maths()
     system("cls");
     printf("Mathematical Terms\n");
     printf("------------------\n");
-    printf("defination.\n\n");
-
+    printf("Mathematics Terms are the area of knowledge that includes different number systems.\n\n");
 rev:;
     printf("\n");
     printf("[1]: Fibonacci number\n");
     printf("[2]: Factorial\n");
-    printf("[3]: Carmichael Number\n");
-    // printf("[4]: Butterfly Pattern\n\n");
-    // printf("[5]: Floyed Triangle\n");
-    // printf("[6]: Pascal Triangle\n");
-    // printf("[7]: Pattern 1\n\n");
     printf("^> Please choose one: ");
     scanf(" %c", &choose);
     switch (choose)
@@ -962,21 +982,6 @@ rev:;
     case '2':
         factorial();
         break;
-    case '3':
-        carmichael();
-        break;
-    // case '4':
-    //     butterfly(n);
-    //     break;
-    // case '5':
-    //     floyed(n);
-    //     break;
-    // case '6':
-    //     pascal(n);
-    //     break;
-    // case '7':
-    //     pattern1(n);
-    //     break;
     default:
         printf("Error! Please choose it carefully.\n");
         goto rev;
@@ -1038,11 +1043,6 @@ int fac(int n)
     n *= fac(n - 1);
     printf("%d ", n);
     return n;
-}
-
-void carmichael()
-{
-    
 }
 
 // ---------------------------------------------------------------------------- ( 4. Pattern ) --------------------------------------------------------------------------------
@@ -1413,8 +1413,7 @@ void multiplication()
             {
                 printf("-> Multiply %d of first list from %d of second list.\n", *(*(a + i) + k), *(*(b + k) + j));
                 *(*(mul + i) + j) += *(*(a + i) + k) * *(*(b + k) + j);
-                 printf("-> Value updated to %d at position (%d,%d).\n", *(*(mul + i) + j), i, j);
-
+                printf("-> Value updated to %d at position (%d,%d).\n", *(*(mul + i) + j), i, j);
             }
         }
     }
@@ -1448,105 +1447,5 @@ void output(int **num, int x, int y)
             printf("%5d\t", *(*(num + i) + j));
         printf("\n");
     }
-}
-
-// ---------------------------------------------------------------------------- ( Login Page ) --------------------------------------------------------------------------------
-void login(FILE *fp)
-{
-    system("cls");
-    printf("LOGIN\n");
-    printf("-----\n");
-
-    char *username = malloc(sizeof(char) * M);
-    printf("Enter Username: ");
-    scanf("%s", username);
-
-    int i = 0;
-    char *password = malloc(sizeof(char) * M), blank = ' ';
-    printf("Enter Password: ");
-    while (i < M)
-    {
-        *(password + i) = getch();
-        blank = *(password + i);
-        if (blank == 13)
-            break;
-        else
-            printf("*");
-        i++;
-    }
-    *(password + i) = '\0';
-    i = 0;
-    printf("\n\n");
-    if (strcmp(username, "PMS") == 0 && strcmp(password, "nolimit") == 0)
-    {
-        printf("ACCESS GRANTED.\n");
-        printf("Press any key to continue...");
-        getch();
-        details(fp);
-    }
-    else
-    {
-        printf("ACCESS DENIED.\n");
-        printf("^>Please choose one (To back, press \"b/B\" | To quit, press \"q/Q\"): ");
-        scanf(" %c", &choose);
-        switch (choose)
-        {
-        case 'b':
-        case 'B':
-            main();
-            break;
-        case 'q':
-        case 'Q':
-            finish();
-            break;
-        default:
-            finish();
-            break;
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------- ( Detail Page ) --------------------------------------------------------------------------------
-void details(FILE *fp)
-{
-    system("cls");
-    printf("NAMES\n");
-    printf("-----\n");
-    while (fgets(registor.name, M - 1, fp) != 0)
-    {
-        printf("%s ", registor.name);
-        fflush(stdin);
-    }
-    fclose(fp);
-    keys('0');
-}
-
-// ---------------------------------------------------------------------------- ( Exit Page ) --------------------------------------------------------------------------------
-void finish()
-{
-    system("cls");
-    for (int i = 0; i < N; i++)
-        printf("-");
-    printf("\n");
-    for (int i = 0; i < N / 10; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            if (j == 0 || j == 1 || j == (N - 2) || j == (N - 1))
-                printf("|");
-            else if (i == 5 && j == 41)
-            {
-                printf("Thanks for Visiting.");
-                j += 19;
-            }
-            else
-                printf(" ");
-        }
-        printf("\n");
-    }
-    for (int i = 0; i < N; i++)
-        printf("-");
-    getch();
-    exit(1);
 }
 // End
