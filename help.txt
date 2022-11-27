@@ -1,1 +1,20 @@
-welcome buddy nice to meet you.
+########################################################################################################################
+                                            Thanks for choosing our Program!!
+                    This Program is developed by Shubham Patel and designed by Sanchit Sharma
+########################################################################################################################
+
+>> HOME SCREEN
+-> Fill Details :- It provided the details about Program list after sign up.
+                        To sign up first to access programs.
+
+-> View Details:- It provided the details about users who have signed up.
+                        To access this you need to sign in with username:- "PMS" and password:- "nolimit".
+
+-> Feedback:- To tells us about our bugs and what to improve.
+
+->Instruction:- It tells all about programs.
+
+^> know for Input.
+[]  know for number of the programs.
+# know for Array.
+-> know for process of programs.

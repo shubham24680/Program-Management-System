@@ -14,7 +14,7 @@ void list();           // List of all Programs.
 void login(FILE *fp);
 void details(FILE *fp);
 void feedback();
-void help();
+void instructions();
 void finish();
 
 void searching();
@@ -83,10 +83,7 @@ rev:;
     printf("[1]: Fill Details\n");
     printf("[2]: View Details\n");
     printf("[3]: Feedback\n");
-    printf("[4]: Help\n\n");
-    printf("Hint:-\n");
-    printf("FILL DETAILS:- To reach the program list after signup.\n");
-    printf("VIEW DETAILS:- To check number of users signed up.\n\n");
+    printf("[4]: Instructions\n\n");
     printf("^> Please choose one (To quit, press \"q/Q\"): ");
     scanf(" %c", &choose);
     switch (choose)
@@ -101,7 +98,7 @@ rev:;
         feedback();
         break;
     case '4':
-        help();
+        instructions();
         break;
     case 'q':
     case 'Q':
@@ -285,11 +282,11 @@ void feedback()
 }
 
 // ---------------------------------------------------------------------------- ( Help Page ) --------------------------------------------------------------------------------
-void help()
+void instructions()
 {
     system("cls");
-    printf("Help\n");
-    printf("----\n");
+    printf("INSTRUCTIONS\n");
+    printf("------------\n");
     FILE *help = malloc(sizeof(char)*N);
     help = fopen("help.txt", "r");
     char word[N];
